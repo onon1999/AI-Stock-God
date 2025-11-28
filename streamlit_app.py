@@ -146,7 +146,7 @@ elif mode == "God Mode":
             st.metric("FINAL", r['final_score'])
             st.markdown(f"## {r['FINAL_VERDICT']}")
 
-eelif mode == "NUCLEAR MODE (Llama 405B FREE)":
+elif mode == "NUCLEAR MODE (Llama 405B FREE)":
     st.title("NUCLEAR MODE — Llama 3.1 405B (FREE & UNSTOPPABLE)")
     st.markdown("**No API key needed • Runs forever • Smarter than Gemini**")
     
