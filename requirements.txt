@@ -1,0 +1,9 @@
+streamlit
+yfinance
+pandas
+numpy
+prophet
+requests
+pyttsx3
+schedule
+openpyxl
