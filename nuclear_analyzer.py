@@ -30,7 +30,7 @@ Format:
 """
 
     data = {
-        "model": "google/gemini-2.5-flash",
+       "model": "meta-llama/llama-3.1-405b-instruct:free",
         "messages": [{"role": "user", "content": prompt}],
         "temperature": 0.2,
         "max_tokens": 500
