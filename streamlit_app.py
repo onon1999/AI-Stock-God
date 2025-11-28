@@ -146,23 +146,24 @@ elif mode == "God Mode":
             st.metric("FINAL", r['final_score'])
             st.markdown(f"## {r['FINAL_VERDICT']}")
 
-elif mode == "NUCLEAR MODE (Gemini 2.5)":
-    st.title("NUCLEAR MODE — Gemini 2.5 Flash")
-    ticker = st.text_input("Ticker", "NVDA").upper()
-    if st.button("UNLEASH GEMINI"):
-        with st.spinner("Gemini is analyzing..."):
+eelif mode == "NUCLEAR MODE (Llama 405B FREE)":
+    st.title("NUCLEAR MODE — Llama 3.1 405B (FREE & UNSTOPPABLE)")
+    st.markdown("**No API key needed • Runs forever • Smarter than Gemini**")
+    
+    ticker = st.text_input("Enter ticker", "NVDA").upper()
+    if st.button("UNLEASH LLAMA", type="primary"):
+        with st.spinner("Llama 405B is analyzing..."):
             try:
-                api_key = st.secrets["OPENROUTER_API_KEY"]  # ← NOW READ HERE
-                a = NuclearStockAnalyzer(ticker)
-                r = a.analyze(api_key)  # ← PASS KEY
-                st.success("GEMINI HAS SPOKEN")
-                st.metric("Price", f"${r['price']}")
-                st.markdown(f"### {r['company']}")
+                analyzer = NuclearStockAnalyzer(ticker)
+                result = analyzer.analyze()  # ← No key passed
+                st.success(f"LLAMA 405B HAS SPOKEN FOR {ticker}")
+                st.metric("Current Price", f"${result['price']}")
+                st.markdown(f"### {result['company']}")
                 st.markdown("---")
-                st.markdown(r['gemini_analysis'])
-                st.caption(f"{r['timestamp']}")
+                st.markdown(result['gemini_analysis'])  # ← Still uses this key in dict
+                st.caption(f"Powered by Llama 3.1 405B • {result['timestamp']}")
             except Exception as e:
-                st.error("Key missing! Add to Secrets:\nOPENROUTER_API_KEY = \"sk-or-...\" (with quotes)")
+                st.error(f"Error: {e}")
 
 elif mode == "Watchlist":
     st.title("My Watchlist")
