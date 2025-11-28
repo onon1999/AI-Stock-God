@@ -1,15 +1,18 @@
-# nuclear_analyzer.py — FINAL FREE & UNSTOPPABLE VERSION
+# nuclear_analyzer.py — FINAL UNSTOPPABLE VERSION (FREE & WORKS ON STREAMLIT CLOUD)
 import yfinance as yf
 import requests
 from datetime import datetime
 
 def ask_llama(ticker, company_name, price, pe, peg, roe, debt, revenue_growth):
     url = "https://openrouter.ai/api/v1/chat/completions"
+    
+    # CRITICAL HEADERS — THESE ARE REQUIRED FOR FREE MODELS
     headers = {
-        "Authorization": "Bearer dummy_key",  # Not needed for :free models
-        "HTTP-Referer": "https://ai-stock-god.streamlit.app",
-        "X-Title": "AI Stock God",
-        "Content-Type": "application/json"
+        "Authorization": "Bearer dummy",  # Not checked for :free models
+        "HTTP-Referer": "https://ai-stock-god.streamlit.app",  # Your app URL
+        "X-Title": "AI Stock God",                            # App name
+        "Content-Type": "application/json",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
     }
 
     prompt = f"""You are a senior Goldman Sachs equity analyst.
@@ -29,15 +32,15 @@ Give in this EXACT format:
         "model": "meta-llama/llama-3.1-405b-instruct:free",
         "messages": [{"role": "user", "content": prompt}],
         "temperature": 0.3,
-        "max_tokens": 500
+        "max_tokens": 600
     }
 
     try:
-        r = requests.post(url, headers=headers, json=data, timeout=40)
+        r = requests.post(url, headers=headers, json=data, timeout=45)
         if r.status_code == 200:
             return r.json()["choices"][0]["message"]["content"]
         else:
-            return f"API Error {r.status_code}\n{r.text}"
+            return f"API Error {r.status_code}\n{r.text}\n\nCheck headers or model name"
     except Exception as e:
         return f"Request failed: {str(e)}\nCheck internet connection"
 
@@ -48,7 +51,7 @@ class NuclearStockAnalyzer:
         self.info = self.stock.info
 
     def analyze(self):
-        price = self.info.get('currentPrice') or 0
+        price = self.info.get('currentPrice') or self.info.get('regularMarketPrice') or 0
         pe = self.info.get('trailingPE') or 0
         peg = self.info.get('pegRatio') or 0
         roe = self.info.get('returnOnEquity') or 0
@@ -62,6 +65,6 @@ class NuclearStockAnalyzer:
             "ticker": self.ticker,
             "company": company_name,
             "price": round(price, 2),
-            "gemini_analysis": llama_analysis,  # Still works with app.py
+            "gemini_analysis": llama_analysis,  # Keeps compatibility with app.py
             "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M")
         }
