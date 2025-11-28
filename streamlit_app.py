@@ -150,10 +150,11 @@ elif mode == "NUCLEAR MODE (Gemini 2.5)":
     st.title("NUCLEAR MODE — Gemini 2.5 Flash")
     ticker = st.text_input("Ticker", "NVDA").upper()
     if st.button("UNLEASH GEMINI"):
-        with st.spinner("Gemini is thinking..."):
+        with st.spinner("Gemini is analyzing..."):
             try:
+                api_key = st.secrets["OPENROUTER_API_KEY"]  # ← NOW READ HERE
                 a = NuclearStockAnalyzer(ticker)
-                r = a.analyze()
+                r = a.analyze(api_key)  # ← PASS KEY
                 st.success("GEMINI HAS SPOKEN")
                 st.metric("Price", f"${r['price']}")
                 st.markdown(f"### {r['company']}")
@@ -161,7 +162,7 @@ elif mode == "NUCLEAR MODE (Gemini 2.5)":
                 st.markdown(r['gemini_analysis'])
                 st.caption(f"{r['timestamp']}")
             except Exception as e:
-                st.error(f"Error: {e}")
+                st.error("Key missing! Add to Secrets:\nOPENROUTER_API_KEY = \"sk-or-...\" (with quotes)")
 
 elif mode == "Watchlist":
     st.title("My Watchlist")
